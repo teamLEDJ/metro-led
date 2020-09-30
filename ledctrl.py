@@ -134,3 +134,11 @@ class LEDCtrl():
             self.__set_strip_betw_sta(line, lednum, 1)
         
         return lednum
+
+    def __set_traincache(self, cache, train, lednum):
+        '''列車ごとのキャッシュを設定
+        '''
+        
+        train_data = {
+            "odpt:fromStation": train["odpt:fromStation"], "odpt:toStation": train["odpt:toStation"], "nowled": lednum}
+        cache.update([(train["odpt:trainNumber"], train_data)])
