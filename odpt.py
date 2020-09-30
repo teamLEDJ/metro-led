@@ -81,3 +81,26 @@ class ODPT():
             sta_table = json.load(sta)
 
         return sta_table
+
+    def get_stationtable_api(self):
+        '''APIから"service"の駅テーブルを取得する
+
+        Returns
+        -------
+        sta_table : dict
+            "service"の路線ごとの駅テーブル
+        '''
+        railway = self.get_railway()
+        sta_table = {}
+
+        for i in range(len(railway)):
+            sta_order = railway[i]["odpt:stationOrder"]
+            sta_table[railway[i]["odpt:lineCode"]] = {}
+
+            for j in range(len(sta_order)):
+                if self.service == "metro":
+                    sta_table[railway[i]["odpt:lineCode"]].update([(sta_order[j]["odpt:station"], sta_order[j]["odpt:index"])])
+                else:
+                    sta_table[railway[i]["odpt:lineCode"]].update([(sta_order[j]["odpt:station"], sta_order[j]["odpt:index"] - 1)])
+
+        return sta_table
