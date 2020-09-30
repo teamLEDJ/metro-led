@@ -38,3 +38,23 @@ class LEDCtrl():
         self.distance = config["led_distance"]
         self.sta_color = config["stationcolor"]
         self.lines = config["lines"]
+
+    def strip_setup(self, use_lines):
+        '''各路線のLEDテープのセットアップ
+
+        Parameters
+        ----------
+        use_lines : list
+            接続したLEDテープの路線のlineCodeのリスト (例: ["G", "M"])
+        '''
+
+        for i in range(len(use_lines)):
+            line_conf = self.lines[use_lines[i]]
+
+            # 各路線の設定項目にstripを追加
+            self.lines[use_lines[i]]["strip"] = Adafruit_NeoPixel(
+                (len(self.stations[use_lines[i]])-1) *
+                self.distance+1, line_conf["gpio"], self.__FREQ_HZ,
+                self.__DMA, self.__INVERT, line_conf["brightness"], line_conf["pwm"])
+
+            self.lines[use_lines[i]]["strip"].begin()
