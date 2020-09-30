@@ -23,7 +23,7 @@ class Main():
         stations = self.odpt.get_stationtable()
 
         self.led = LEDCtrl(stations)
-        self.led.strip_setup(self.lines)
+        self.led.setup_strip(self.lines)
 
 
 if __name__ == "__main__":
