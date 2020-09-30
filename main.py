@@ -25,6 +25,15 @@ class Main():
         self.led = LEDCtrl(stations)
         self.led.setup_strip(self.lines)
 
+    def __showline_thread(self, line):
+        while True:
+            try:
+                trains = self.odpt.get_train(line)
+                self.led.show_strip(line, trains, self.odpt.update_freq)
+            # 例外: json取得失敗など
+            except: 
+                print(traceback.format_exc())
+
 
 if __name__ == "__main__":
     main = Main()
