@@ -1,0 +1,28 @@
+{
+    "update_freq": 30,
+    "odpt": {
+        "token": "YOUR_ODPT_ACCESS_TOKEN",
+        "Train": {
+            "A": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Asakusa&acl:consumerKey=",
+            "I": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Mita&acl:consumerKey=",
+            "S": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Shinjuku&acl:consumerKey=",
+            "E": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Oedo&acl:consumerKey="
+        },
+        "Railway": "https://api.odpt.org/api/v4/odpt:Railway?odpt:operator=odpt.Operator:Toei&acl:consumerKey="
+    },
+    "metro": {
+        "token": "YOUR_METROAPP_ACCESS_TOKEN",
+        "Train": {
+            "G": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Ginza&acl:consumerKey=",
+            "M": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Marunouchi&acl:consumerKey=",
+            "H": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Hibiya&acl:consumerKey=",
+            "T": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Tozai&acl:consumerKey=",
+            "C": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Chiyoda&acl:consumerKey=",
+            "Y": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Yurakucho&acl:consumerKey=",
+            "Z": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Hanzomon&acl:consumerKey=",
+            "N": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Namboku&acl:consumerKey=",
+            "F": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Fukutoshin&acl:consumerKey="
+        },
+        "Railway": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Railway&acl:consumerKey="
+    }
+}
