@@ -25,13 +25,20 @@ class Main():
         self.led = LEDCtrl(stations)
         self.led.setup_strip(self.lines)
 
+    def showline(self):
+        for i in range(len(self.lines)):
+            self.led.lines[self.lines[i]]["thread"] = threading.Thread(
+                target=self.__showline_thread, args=(self.lines[i],))
+            self.led.lines[self.lines[i]]["thread"].setDaemon(True)
+            self.led.lines[self.lines[i]]["thread"].start()
+
     def __showline_thread(self, line):
         while True:
             try:
                 trains = self.odpt.get_train(line)
                 self.led.show_strip(line, trains, self.odpt.update_freq)
             # 例外: json取得失敗など
-            except: 
+            except:
                 print(traceback.format_exc())
 
 
