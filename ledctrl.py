@@ -96,7 +96,7 @@ class LEDCtrl():
     def __set_normal_betw_sta(self, line, trains, i, movingpos):
         '''通常時の駅間の列車の位置設定
         '''
-        
+
         from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
         to_sta_index = self.stations[line][trains[i]["odpt:toStation"]]
 
@@ -109,5 +109,28 @@ class LEDCtrl():
         else:
             lednum = from_sta_index*self.distance - movingpos
             self.__set_strip_betw_sta(line, lednum, -1)
+        
+        return lednum
+
+    def __set_maruouchi_betw_sta(self, line, trains, i, movingpos):
+        '''丸ノ内線特定区間の列車の位置設定
+        '''
+
+        # 中野坂上 -> 中野新橋のみ
+        from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
+        to_sta_index = self.stations[line][trains[i]["odpt:toStation"]]
+        
+        # 出発直後: 中野坂上駅のledと支線の最初のLEDを点灯
+        if movingpos == 0:
+            lednum = from_sta_index*self.distance
+            self.lines[line]["strip"].setPixelColor(
+                lednum, Color(*self.lines[line]["traincolor"]))
+            self.lines[line]["strip"].setPixelColor(
+                to_sta_index*self.distance - self.distance + 1, Color(*self.lines[line]["traincolor"]))
+        
+        # それ以降
+        else:
+            lednum = to_sta_index*self.distance - self.distance + movingpos
+            self.__set_strip_betw_sta(line, lednum, 1)
         
         return lednum
