@@ -39,7 +39,7 @@ class LEDCtrl():
         self.sta_color = config["stationcolor"]
         self.lines = config["lines"]
 
-    def strip_setup(self, use_lines):
+    def setup_strip(self, use_lines):
         '''各路線のLEDテープのセットアップ
 
         Parameters
