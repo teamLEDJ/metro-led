@@ -83,3 +83,12 @@ class LEDCtrl():
         for i in range(len(self.stations[line])):
             self.lines[line]["strip"].setPixelColor(
                 i*self.distance, Color(*self.sta_color))
+
+    def __set_strip_betw_sta(self, line, lednum, direction):
+        '''LEDテープに駅間の列車を描画
+        '''
+        
+        self.lines[line]["strip"].setPixelColor(
+            lednum, Color(*self.lines[line]["traincolor"]))
+        self.lines[line]["strip"].setPixelColor(
+            lednum + direction, Color(*self.lines[line]["traincolor"]))
