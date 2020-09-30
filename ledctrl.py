@@ -87,8 +87,27 @@ class LEDCtrl():
     def __set_strip_betw_sta(self, line, lednum, direction):
         '''LEDテープに駅間の列車を描画
         '''
-        
+
         self.lines[line]["strip"].setPixelColor(
             lednum, Color(*self.lines[line]["traincolor"]))
         self.lines[line]["strip"].setPixelColor(
             lednum + direction, Color(*self.lines[line]["traincolor"]))
+
+    def __set_normal_betw_sta(self, line, trains, i, movingpos):
+        '''通常時の駅間の列車の位置設定
+        '''
+        
+        from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
+        to_sta_index = self.stations[line][trains[i]["odpt:toStation"]]
+
+        # ナンバリング正方向
+        if from_sta_index < to_sta_index:
+            lednum = from_sta_index*self.distance + movingpos
+            self.__set_strip_betw_sta(line, lednum, 1)
+
+        # ナンバリング負方向
+        else:
+            lednum = from_sta_index*self.distance - movingpos
+            self.__set_strip_betw_sta(line, lednum, -1)
+        
+        return lednum
