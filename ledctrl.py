@@ -61,6 +61,7 @@ class LEDCtrl():
 
     def show_strip(self, line, trains, update_freq):
         '''LEDテープに列車位置を点灯
+
         Parameters
         ----------
         line : str
@@ -177,22 +178,26 @@ class LEDCtrl():
                 else:
                     # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
                     if line == "M" and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
-                        lednum = self.__set_maruouchi_betw_sta(line, trains, i, movingpos)
+                        lednum = self.__set_maruouchi_betw_sta(
+                            line, trains, i, movingpos)
                     else:
-                        lednum = self.__set_normal_betw_sta(line, trains, i, movingpos)
+                        lednum = self.__set_normal_betw_sta(
+                            line, trains, i, movingpos)
 
             # 駅間
             else:
                 # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
                 if line == "M" and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
-                    lednum = self.__set_maruouchi_betw_sta(line, trains, i, movingpos)
+                    lednum = self.__set_maruouchi_betw_sta(
+                        line, trains, i, movingpos)
                 else:
-                    lednum = self.__set_normal_betw_sta(line, trains, i, movingpos)
+                    lednum = self.__set_normal_betw_sta(
+                        line, trains, i, movingpos)
 
             # キャッシュ生成
             self.__set_traincache(cache_new, trains[i], lednum)
 
-        return cache_new    
+        return cache_new
 
     def __set_strip_betw_sta(self, line, lednum, direction):
         '''LEDテープに駅間の列車を描画
@@ -219,7 +224,7 @@ class LEDCtrl():
         else:
             lednum = from_sta_index*self.distance - movingpos
             self.__set_strip_betw_sta(line, lednum, -1)
-        
+
         return lednum
 
     def __set_maruouchi_betw_sta(self, line, trains, i, movingpos):
@@ -229,7 +234,7 @@ class LEDCtrl():
         # 中野坂上 -> 中野新橋のみ
         from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
         to_sta_index = self.stations[line][trains[i]["odpt:toStation"]]
-        
+
         # 出発直後: 中野坂上駅のledと支線の最初のLEDを点灯
         if movingpos == 0:
             lednum = from_sta_index*self.distance
@@ -237,12 +242,12 @@ class LEDCtrl():
                 lednum, Color(*self.lines[line]["traincolor"]))
             self.lines[line]["strip"].setPixelColor(
                 to_sta_index*self.distance - self.distance + 1, Color(*self.lines[line]["traincolor"]))
-        
+
         # それ以降
         else:
             lednum = to_sta_index*self.distance - self.distance + movingpos
             self.__set_strip_betw_sta(line, lednum, 1)
-        
+
         return lednum
 
     def __set_traincache(self, cache, train, lednum):
