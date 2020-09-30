@@ -41,6 +41,10 @@ class Main():
             except:
                 print(traceback.format_exc())
 
+    def stop(self):
+        for i in range(len(self.lines)):
+            self.led.clear_strip(self.lines[i])
+
 
 if __name__ == "__main__":
     main = Main()
