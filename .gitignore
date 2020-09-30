@@ -1,2 +1,3 @@
 .vscode
 __pycache__
+config/api_config.json
