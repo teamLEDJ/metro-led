@@ -11,6 +11,13 @@ class ODPT():
         オープンデータのサービス("odpt" or "metro")
     jsonpath : str
         api_config.jsonのパス
+
+    Attributes
+    ----------
+    service : str
+        オープンデータのサービス
+    update_freq : int
+        APIデータの更新間隔
     '''
 
     def __init__(self, service, jsonpath="./config/api_config.json"):
