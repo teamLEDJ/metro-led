@@ -46,3 +46,22 @@ class ODPT():
         railway_data = r.json()
 
         return railway_data
+
+    def get_train(self, line):
+        '''列車走行位置を取得する
+
+        Parameters
+        ----------
+        line : str
+            路線のlineCode (例: 銀座線->"G")
+
+        Returns
+        -------
+        data : list of dict
+            指定した路線の列車走行位置情報
+        '''
+
+        r = requests.get(self.__odpt_tra[line] + self.__key)
+        train_data = r.json()
+        
+        return train_data
