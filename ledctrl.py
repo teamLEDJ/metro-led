@@ -84,6 +84,81 @@ class LEDCtrl():
             self.lines[line]["strip"].setPixelColor(
                 i*self.distance, Color(*self.sta_color))
 
+    def __set_trainpos(self, line, trains, cache, movingpos):
+        '''
+        Parameters
+        ----------
+        line : str
+            路線のlineCode
+        trains : list
+            ODPT.get_train()で得られた, 指定した路線の列車走行位置情報
+        cache : dict
+            列番ごとの位置情報と点灯中のLEDの番号
+            LEDCtrl.lines[line]["cache"]を指定
+        movingpos : int
+            駅間移動に使用する
+            0 ~ LEDCtrl.distanceまでインクリメントした値
+
+        Returns
+        -------
+        cache_new : dict
+            列番ごとの位置情報と点灯中のLEDの番号が格納された新しいキャッシュ
+        '''
+
+        cache_new = {}    # 次回更新時用キャッシュ
+
+        for i in range(len(trains)):
+            # 駅停車時
+            if trains[i]["odpt:toStation"] == None:
+                from_sta_index = self.stations[line][trains[i]
+                                                     ["odpt:fromStation"]]
+                lednum = from_sta_index*self.distance
+                self.lines[line]["strip"].setPixelColor(
+                    lednum, Color(*self.lines[line]["traincolor"]))
+
+            # 駅間(キャッシュに列車番号存在)
+            # キャッシュから列車番号を検索
+            elif trains[i]["odpt:trainNumber"] in cache:
+                # 駅間情報がキャッシュと新しい情報で一致 (更新前と更新後で列車位置が同じ)
+                if cache[trains[i]["odpt:trainNumber"]]["odpt:fromStation"] == trains[i]["odpt:fromStation"] and cache[trains[i]["odpt:trainNumber"]]["odpt:toStation"] == trains[i]["odpt:toStation"]:
+
+                    from_sta_index = self.stations[line][trains[i]
+                                                         ["odpt:fromStation"]]
+                    to_sta_index = self.stations[line][trains[i]
+                                                       ["odpt:toStation"]]
+
+                    # キャッシュからLED点灯位置取得
+                    lednum = cache[trains[i]["odpt:trainNumber"]]["nowled"]
+
+                    # LED点灯位置を据え置く
+                    # ナンバリング正方向
+                    if from_sta_index < to_sta_index:
+                        self.__set_strip_betw_sta(line, lednum, 1)
+                    # ナンバリング負方向
+                    else:
+                        self.__set_strip_betw_sta(line, lednum, -1)
+
+                # 駅間列車位置更新時
+                else:
+                    # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
+                    if line == "M" and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
+                        lednum = self.__set_maruouchi_betw_sta(line, trains, i, movingpos)
+                    else:
+                        lednum = self.__set_normal_betw_sta(line, trains, i, movingpos)
+
+            # 駅間
+            else:
+                # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
+                if line == "M" and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
+                    lednum = self.__set_maruouchi_betw_sta(line, trains, i, movingpos)
+                else:
+                    lednum = self.__set_normal_betw_sta(line, trains, i, movingpos)
+
+            # キャッシュ生成
+            self.__set_traincache(cache_new, trains[i], lednum)
+
+        return cache_new    
+
     def __set_strip_betw_sta(self, line, lednum, direction):
         '''LEDテープに駅間の列車を描画
         '''
@@ -138,7 +213,7 @@ class LEDCtrl():
     def __set_traincache(self, cache, train, lednum):
         '''列車ごとのキャッシュを設定
         '''
-        
+
         train_data = {
             "odpt:fromStation": train["odpt:fromStation"], "odpt:toStation": train["odpt:toStation"], "nowled": lednum}
         cache.update([(train["odpt:trainNumber"], train_data)])
