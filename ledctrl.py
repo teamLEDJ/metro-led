@@ -58,3 +58,16 @@ class LEDCtrl():
                 self.__DMA, self.__INVERT, line_conf["brightness"], line_conf["pwm"])
 
             self.lines[use_lines[i]]["strip"].begin()
+
+    def __set_background(self, line):
+        '''路線の暗色をLEDに設定
+
+        Parameters
+        ----------
+        line : str
+            路線のlineCode
+        '''
+
+        for i in range((len(self.stations[line]) - 1) * self.distance):
+            self.lines[line]["strip"].setPixelColor(
+                i, Color(*self.lines[line]["groundcolor"]))
