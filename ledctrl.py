@@ -81,6 +81,19 @@ class LEDCtrl():
 
         self.lines[line]["cache"] = cache
 
+    def clear_strip(self, line):
+        '''指定した路線のLEDテープを消灯
+
+        Parameters
+        ----------
+        line : str
+            路線のlineCode
+        '''
+
+        for i in range(self.lines[line]["strip"].numPixels()):
+            self.lines[line]["strip"].setPixelColor(i, Color(0, 0, 0))
+        self.lines[line]["strip"].show()
+
     def __set_background(self, line):
         '''路線の暗色をLEDに設定
 
