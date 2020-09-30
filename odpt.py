@@ -32,3 +32,17 @@ class ODPT():
         self.__key = config[service]["token"]
         self.__odpt_tra = config[service]["Train"]
         self.__odpt_rwy = config[service]["Railway"] + self.__key
+
+    def get_railway(self):
+        '''"service"で提供される路線情報を取得する
+
+        Returns
+        -------
+        data : list of dict
+            路線ごとの駅情報
+        '''
+
+        r = requests.get(self.__odpt_rwy)
+        railway_data = r.json()
+
+        return railway_data
