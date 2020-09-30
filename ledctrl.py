@@ -59,6 +59,28 @@ class LEDCtrl():
 
             self.lines[use_lines[i]]["strip"].begin()
 
+    def show_strip(self, line, trains, update_freq):
+        '''LEDテープに列車位置を点灯
+        Parameters
+        ----------
+        line : str
+            路線のlineCode
+        trains : list
+            ODPT.get_train()で得られた, 指定した路線の列車走行位置情報
+        update_freq : int
+            データの更新間隔
+        '''
+
+        for i in range(self.distance-1):
+            self.__set_background(line)
+            self.__set_stationpos(line)
+            cache = self.__set_trainpos(
+                line, trains, self.lines[line]["cache"], i)
+            self.lines[line]["strip"].show()
+            time.sleep(update_freq/(self.distance-1))
+
+        self.lines[line]["cache"] = cache
+
     def __set_background(self, line):
         '''路線の暗色をLEDに設定
 
