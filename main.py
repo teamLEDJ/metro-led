@@ -48,3 +48,12 @@ class Main():
 
 if __name__ == "__main__":
     main = Main()
+    main.showline()
+    
+    while 1:
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            main.stop()
+            print("\nExit")
+            break
