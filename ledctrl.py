@@ -71,3 +71,15 @@ class LEDCtrl():
         for i in range((len(self.stations[line]) - 1) * self.distance):
             self.lines[line]["strip"].setPixelColor(
                 i, Color(*self.lines[line]["groundcolor"]))
+
+    def __set_stationpos(self, line):
+        '''路線の駅位置をLEDに設定
+
+        Parameters
+        ----------
+        line : str
+            路線のlineCode
+        '''
+        for i in range(len(self.stations[line])):
+            self.lines[line]["strip"].setPixelColor(
+                i*self.distance, Color(*self.sta_color))
