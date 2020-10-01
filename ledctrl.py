@@ -190,6 +190,7 @@ class LEDCtrl():
                         and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
                         and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
 
+                        from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
                         lednum = from_sta_index * self.distance + movingpos
                         self.__set_strip_betw_sta(line, lednum, 1)
 
@@ -219,6 +220,7 @@ class LEDCtrl():
                     and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
                     and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
 
+                    from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
                     lednum = from_sta_index * self.distance + movingpos
                     self.__set_strip_betw_sta(line, lednum, 1)
                 
