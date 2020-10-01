@@ -126,6 +126,7 @@
         "odpt.Station:Toei.Oedo.KokuritsuKyogijo": 13,
         "odpt.Station:Toei.Oedo.Yoyogi": 12,
         "odpt.Station:Toei.Oedo.Shinjuku": 11,
+        "odpt.Station:Toei.Oedo.Tochomae.Dummy": -1,
         "odpt.Station:Toei.Oedo.NishiShinjukuGochome": 9,
         "odpt.Station:Toei.Oedo.NakanoSakaue": 8,
         "odpt.Station:Toei.Oedo.HigashiNakano": 7,
