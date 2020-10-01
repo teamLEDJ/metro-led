@@ -168,8 +168,13 @@ class LEDCtrl():
                     lednum = cache[trains[i]["odpt:trainNumber"]]["nowled"]
 
                     # LED点灯位置を据え置く
+                    # 大江戸線 新宿西口 -> 都庁前
+                    if line == "E" \
+                        and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
+                        and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
+                        self.__set_strip_betw_sta(line, lednum, 1)
                     # ナンバリング正方向
-                    if from_sta_index < to_sta_index:
+                    elif from_sta_index < to_sta_index:
                         self.__set_strip_betw_sta(line, lednum, 1)
                     # ナンバリング負方向
                     else:
