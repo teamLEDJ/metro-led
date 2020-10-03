@@ -4,8 +4,6 @@
     "lines": {
         "G": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [185, 90, 0],
             "groundcolor": [36, 12, 0],
             "strip": null,
@@ -13,8 +11,6 @@
         },
         "M": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [200, 6, 8],
             "groundcolor": [30, 1, 2],
             "strip": null,
@@ -22,8 +18,6 @@
         },
         "H": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [171, 161, 140],
             "groundcolor": [20, 19, 17],
             "strip": null,
@@ -31,8 +25,6 @@
         },
         "T": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [0, 155, 191],
             "groundcolor": [0, 31, 38],
             "strip": null,
@@ -40,8 +32,6 @@
         },
         "C": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [0, 200, 50],
             "groundcolor": [0, 40, 14],
             "strip": null,
@@ -49,8 +39,6 @@
         },
         "Y": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [199, 127, 22],
             "groundcolor": [39, 25, 5],
             "strip": null,
@@ -58,8 +46,6 @@
         },
         "Z": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [143, 60, 200],
             "groundcolor": [28, 12, 40],
             "strip": null,
@@ -67,8 +53,6 @@
         },
         "N": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [0, 180, 80],
             "groundcolor": [0, 36, 16],
             "strip": null,
@@ -76,8 +60,6 @@
         },
         "F": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [200, 55, 0],
             "groundcolor": [40, 11, 0],
             "strip": null,
@@ -85,8 +67,6 @@
         },
         "A": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [200, 35, 10],
             "groundcolor": [40, 7, 2],
             "strip": null,
@@ -94,8 +74,6 @@
         },
         "I": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [0, 40, 200],
             "groundcolor": [0, 8, 40],
             "strip": null,
@@ -103,8 +81,6 @@
         },
         "S": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [179, 193, 25],
             "groundcolor": [36, 38, 5],
             "strip": null,
@@ -112,8 +88,6 @@
         },
         "E": {
             "brightness": 70,
-            "gpio": 18,
-            "pwm": 0,
             "traincolor": [182, 10, 43],
             "groundcolor": [36, 2, 8],
             "strip": null,
