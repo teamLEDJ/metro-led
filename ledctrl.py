@@ -18,7 +18,7 @@ class LEDCtrl():
     stations : dict
         路線ごとの駅テーブル
     distance : int
-        前駅を含む，次駅直前までのLEDのドット数
+        駅間のLEDのドット数
     sta_color : list of int
         駅を示すLEDの色(R, G, B)
     lines : dict
@@ -35,7 +35,7 @@ class LEDCtrl():
 
         self.stations = stations
 
-        self.distance = config["led_distance"]
+        self.distance = config["led_distance"] + 1
         self.sta_color = config["stationcolor"]
         self.lines = config["lines"]
 
