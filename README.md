@@ -90,3 +90,15 @@ sudo python3 main.py -l G
 ```
 sudo python3 main.py -l G A
 ```
+
+## Others
+### 路線ごとのLEDの明るさ・色調整
+[config/led_config.json](config/led_config.json)内の設定値を変更することで，明るさや色調整ができます．  
+- stationcolor [R, G, B]  
+駅の色を調整できます(0~255)．
+- brightness  
+LED自体の明るさを調整できます(0~100).  
+- traincolor [R, G, B]  
+列車の色を調整できます(0~255)．  
+- groundcolor [R, G, B]  
+列車がいない場合の色を調整できます(0~255)．  
