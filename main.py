@@ -36,6 +36,8 @@ class Main():
 
             print(f"{datetime.datetime.now().isoformat()} [Info] Line: {self.lines[i]} thread is started!")
 
+            time.sleep(1)
+
     def __showline_thread(self, line):
         # 例外カウント
         except_count = 0
