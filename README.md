@@ -15,6 +15,11 @@
 
 ## Prerequisites
 ### 開発者サイトへの登録
+以下のサイトにてユーザ登録を行い，アクセストークンを発行します．登録完了には数日かかる場合があります．  
+[公共交通オープンデータセンター 開発者サイト](https://developer.odpt.org/)  
+[東京メトロオープンデータ開発者サイト](https://developer.tokyometroapp.jp/info)  
+
+登録完了後，発行されたトークンを[config/api_config.json](config/api_config.json)に設定します．  
 
 ### ハードウェア
 
