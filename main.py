@@ -52,6 +52,9 @@ class Main():
         while True:
             try:
                 trains = self.odpt.get_train(line)
+                if trains == []:
+                    print(f"{datetime.datetime.now().isoformat()} [Error] Line: {line} There are no trains currently running! Stop this thread.")
+                    break
                 print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {trains[0]['dc:date']}")
                 self.led.show_strip(line, trains, self.odpt.update_freq)
                 # 例外カウント初期化
