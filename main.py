@@ -11,20 +11,27 @@ from ledctrl import LEDCtrl
 class Main():
     def __init__(self):
         self.parser = argparse.ArgumentParser()
-        self.parser.add_argument("-l", "--lines", action="store",
-                                help="表示する路線の路線記号. 独立制御は2本まで. Default: G", default=["G"],
+        self.parser.add_argument("-ch0", "--ch0-lines", action="store",
+                                help="PWM Channel 0に表示する路線の路線記号. Default: G", default=["G"],
+                                type=str, choices=["G", "M", "H", "T", "C", "Y", "Z", "N", "F", "A", "I", "S", "E"],
+                                nargs='*')
+        self.parser.add_argument("-ch1", "--ch1-lines", action="store",
+                                help="PWM Channel 0に表示する路線の路線記号. ", default=[],
                                 type=str, choices=["G", "M", "H", "T", "C", "Y", "Z", "N", "F", "A", "I", "S", "E"],
                                 nargs='*')
         self.args = self.parser.parse_args()
 
-        self.lines = self.args.lines
+        self.ch0_lines = self.args.ch0_lines
+        self.ch1_lines = self.args.ch1_lines
+        self.lines = self.ch0_lines + self.ch1_lines
 
         self.odpt = ODPT()
         stations = self.odpt.get_stationtable()
         print(f"{datetime.datetime.now().isoformat()} [Info] Stations table is loaded!")
 
         self.led = LEDCtrl(stations)
-        self.led.setup_strip(self.lines)
+        self.led.setup_strip(self.ch0_lines, 0)
+        self.led.setup_strip(self.ch1_lines, 1)
         print(f"{datetime.datetime.now().isoformat()} [Info] LED strips are setuped!")
 
     def showline(self):
