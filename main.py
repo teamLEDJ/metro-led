@@ -1,6 +1,7 @@
 import argparse
 import threading
 import time
+import datetime
 import traceback
 
 from odpt import ODPT
@@ -20,9 +21,11 @@ class Main():
 
         self.odpt = ODPT()
         stations = self.odpt.get_stationtable()
+        print(f"{datetime.datetime.now().isoformat()} [Info] Stations table is loaded!")
 
         self.led = LEDCtrl(stations)
         self.led.setup_strip(self.lines)
+        print(f"{datetime.datetime.now().isoformat()} [Info] LED strips are setuped!")
 
     def showline(self):
         for i in range(len(self.lines)):
@@ -31,6 +34,8 @@ class Main():
             self.led.lines[self.lines[i]]["thread"].setDaemon(True)
             self.led.lines[self.lines[i]]["thread"].start()
 
+            print(f"{datetime.datetime.now().isoformat()} [Info] Line: {self.lines[i]} thread is started!")
+
     def __showline_thread(self, line):
         # 例外カウント
         except_count = 0
@@ -38,6 +43,7 @@ class Main():
         while True:
             try:
                 trains = self.odpt.get_train(line)
+                print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {trains[0]['dc:date']}")
                 self.led.show_strip(line, trains, self.odpt.update_freq)
                 # 例外カウント初期化
                 except_count = 0
@@ -47,19 +53,18 @@ class Main():
                 except_count += 1
 
                 print(traceback.format_exc())
-                print("Could not get or decode json.")
-                print("Retry after 1 second...")
+                print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} Could not get or decode json. Retry after 1 second...")
                 time.sleep(1)
 
                 # 5回以上失敗した場合，処理を終了
                 if except_count >= 5:
-                    print("Processing failed 5 times.")
-                    print("Press Ctrl + C to terminate the main thread.")
+                    print(f"{datetime.datetime.now().isoformat()} [Error] Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
                     break
 
     def stop(self):
         for i in range(len(self.lines)):
             self.led.clear_strip(self.lines[i])
+            print(f"{datetime.datetime.now().isoformat()} [Info] Line: {self.lines[i]} is stopped.")
 
 
 if __name__ == "__main__":
@@ -71,5 +76,5 @@ if __name__ == "__main__":
             time.sleep(1)
         except KeyboardInterrupt:
             main.stop()
-            print("\nExit")
+            print(f"{datetime.datetime.now().isoformat()} [Info] LEDs are stopped.")
             break
