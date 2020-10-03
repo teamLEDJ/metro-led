@@ -11,7 +11,7 @@ class Main():
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("-l", "--lines", action="store",
-                                help="表示する路線のLineCode(独立制御は2本まで. Default: G", default=["G"],
+                                help="表示する路線の路線記号. 独立制御は2本まで. Default: G", default=["G"],
                                 type=str, choices=["G", "M", "H", "T", "C", "Y", "Z", "N", "F", "A", "I", "S", "E"],
                                 nargs='*')
         self.args = self.parser.parse_args()
