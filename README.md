@@ -71,3 +71,22 @@ sudo pip3 install rpi_ws281x
 ```
 
 ## Usage
+```
+usage: main.py [-h]
+               [-l [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
+                        表示する路線の路線記号. 独立制御は2本まで. Default: G
+```
+銀座線を表示する場合，以下コマンドで実行します．  
+```
+sudo python3 main.py -l G
+```
+
+複数路線を同時に表示させる場合は，以下コマンドで実行します．以下は，銀座線と浅草線の場合です．  
+> **注意**: PWMのChannelが異なる路線のみ指定してください！また，指定できる路線は2つまでです．
+```
+sudo python3 main.py -l G A
+```
