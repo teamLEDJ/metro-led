@@ -37,6 +37,7 @@ class LEDCtrl():
 
         self.distance = config["led_distance"] + 1
         self.sta_color = config["stationcolor"]
+        self.brightness = config["brightness"]
         self.lines = config["lines"]
 
     def setup_strip(self, use_lines, channel):
@@ -63,14 +64,13 @@ class LEDCtrl():
 
         # LED長を計算
         for i in range(len(use_lines)):
-            line_conf = self.lines[use_lines[i]]
             self.lines[use_lines[i]]["offset"] = offset
             offset = (len(self.stations[use_lines[i]])-1) * self.distance + 1 + offset
 
         # 各路線の設定項目にstripを追加
         strip = Adafruit_NeoPixel(
             offset, gpio, self.__FREQ_HZ,
-            self.__DMA, self.__INVERT, line_conf["brightness"], channel)
+            self.__DMA, self.__INVERT, self.brightness, channel)
         strip.begin()
 
         return strip
