@@ -55,36 +55,40 @@ class Main():
         except_count = 0
 
         while True:
-            try:
-                trains = []
+            trains = []
 
-                for i in range(len(lines)):
-                    line = lines[i]
-                    line_trains = self.odpt.get_train(line)
+            for i in range(len(lines)):
+                line = lines[i]
 
-                    if line_trains == []:
-                        print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} There are no trains currently running!")
-                    else:
-                        print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
-                    trains.append(line_trains)
-                    time.sleep(0.1)
+                while True:
+                    try:
+                        line_trains = self.odpt.get_train(line)
+                        break
 
-                self.led.show_strip(strip, lines, trains, self.odpt.update_freq)
-                # 例外カウント初期化
-                except_count = 0
+                    # 例外: json取得失敗など
+                    except:
+                        except_count += 1
 
-            # 例外: json取得失敗など
-            except:
-                except_count += 1
+                        print(traceback.format_exc())
+                        print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} Could not get or decode json. Retry after 1 second...")
+                        time.sleep(1)
 
-                print(traceback.format_exc())
-                print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} Could not get or decode json. Retry after 1 second...")
-                time.sleep(1)
+                    # 5回以上失敗した場合，処理を終了
+                    if except_count >= 5:
+                        print(f"{datetime.datetime.now().isoformat()} [Error] Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
+                        return False
+                
+                # 列車が存在しない場合
+                if line_trains == []:
+                    print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} There are no trains currently running!")
+                else:
+                    print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
+                trains.append(line_trains)
+                time.sleep(0.1)
 
-                # 5回以上失敗した場合，処理を終了
-                if except_count >= 5:
-                    print(f"{datetime.datetime.now().isoformat()} [Error] Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
-                    break
+            self.led.show_strip(strip, lines, trains, self.odpt.update_freq)
+            # 例外カウント初期化
+            except_count = 0
 
     def stop(self):
         for i in range(len(self.strips)):
