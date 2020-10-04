@@ -57,8 +57,8 @@ class Main():
     def showline(self):
         for i in range(len(self.lines)):
             if self.lines[i] == []:
-                print(self.lines)
                 continue
+            
             th = threading.Thread(
                 target=self.__showline_thread, args=(self.strips[i], self.lines[i], ))
             th.setDaemon(True)
