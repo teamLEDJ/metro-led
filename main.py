@@ -7,6 +7,11 @@ import traceback
 from odpt import ODPT
 from ledctrl import LEDCtrl
 
+class Log():
+    DATE = f'{datetime.datetime.now().isoformat()} '
+    INFO = DATE + '\033[36m[Info]\033[0m '
+    WARN = DATE + '\033[33m[Warn]\033[0m '
+    ERROR = DATE + '\033[31m[Error]\033[0m '
 
 class Main():
     def __init__(self):
@@ -25,7 +30,7 @@ class Main():
 
         self.odpt = ODPT()
         stations = self.odpt.get_stationtable()
-        print(f"{datetime.datetime.now().isoformat()} [Info] Stations table is loaded!")
+        print(f"{Log.INFO}Stations table is loaded!")
 
         self.led = LEDCtrl(stations)
         self.strips = []
@@ -35,7 +40,7 @@ class Main():
             strip = self.led.setup_strip(self.lines[i], i)
             self.strips.append(strip)
 
-        print(f"{datetime.datetime.now().isoformat()} [Info] LED strips are setuped!")
+        print(f"{Log.INFO}LED strips are setuped!")
 
     def showline(self):
         for i in range(len(self.lines)):
@@ -46,7 +51,7 @@ class Main():
             th.setDaemon(True)
             th.start()
 
-            print(f"{datetime.datetime.now().isoformat()} [Info] Strip{i} thread is started!")
+            print(f"{Log.INFO}Strip{i} thread is started!")
 
             time.sleep(1)
     
@@ -70,19 +75,19 @@ class Main():
                         except_count += 1
 
                         print(traceback.format_exc())
-                        print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} Could not get or decode json. Retry after 1 second...")
+                        print(f"{Log.WARN}Line: {line} Could not get or decode json. Retry after 1 second...")
                         time.sleep(2)
 
                     # 5回以上失敗した場合，処理を終了
                     if except_count >= 5:
-                        print(f"{datetime.datetime.now().isoformat()} [Error] Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
+                        print(f"{Log.ERROR}Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
                         return False
                 
                 # 列車が存在しない場合
                 if line_trains == []:
-                    print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} There are no trains currently running!")
+                    print(f"{Log.WARN}Line: {line} There are no trains currently running!")
                 else:
-                    print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
+                    print(f"{Log.INFO}Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
                 trains.append(line_trains)
                 time.sleep(0.2)
 
@@ -93,7 +98,8 @@ class Main():
     def stop(self):
         for i in range(len(self.strips)):
             self.led.clear_strip(self.strips[i])
-            print(f"{datetime.datetime.now().isoformat()} [Info] Strip{i} is stopped.")
+            print(f"{Log.INFO}Strip{i} is stopped.")
+        print(f"{Log.INFO}LEDs are stopped.")
 
 
 if __name__ == "__main__":
@@ -105,5 +111,4 @@ if __name__ == "__main__":
             time.sleep(1)
         except KeyboardInterrupt:
             main.stop()
-            print(f"{datetime.datetime.now().isoformat()} [Info] LEDs are stopped.")
             break
