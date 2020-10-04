@@ -48,87 +48,108 @@ class LEDCtrl():
             接続したLEDテープの路線のlineCodeのリスト (例: ["G", "M"])
         channel : int
             PWMのChannel (0 or 1)
+
+        Returns
+        -------
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
         '''
         # channel
         if channel == 0: gpio = 12
         elif channel == 1: gpio = 13
 
+        # LEDのoffset
+        offset = 0
+
+        # LED長を計算
         for i in range(len(use_lines)):
             line_conf = self.lines[use_lines[i]]
+            self.lines[use_lines[i]]["offset"] = offset
+            offset = (len(self.stations[use_lines[i]])-1) * self.distance + 1 + offset
 
-            # 各路線の設定項目にstripを追加
-            self.lines[use_lines[i]]["strip"] = Adafruit_NeoPixel(
-                (len(self.stations[use_lines[i]])-1) *
-                self.distance+1, gpio, self.__FREQ_HZ,
-                self.__DMA, self.__INVERT, line_conf["brightness"], channel)
+        # 各路線の設定項目にstripを追加
+        strip = Adafruit_NeoPixel(
+            offset, gpio, self.__FREQ_HZ,
+            self.__DMA, self.__INVERT, line_conf["brightness"], channel)
+        strip.begin()
 
-            self.lines[use_lines[i]]["strip"].begin()
+        return strip
 
-    def show_strip(self, line, trains, update_freq):
+    def show_strip(self, strip, lines, trains, update_freq):
         '''LEDテープに列車位置を点灯
 
         Parameters
         ----------
-        line : str
-            路線のlineCode
-        trains : list
-            ODPT.get_train()で得られた, 指定した路線の列車走行位置情報
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
+        lines : list of str
+            路線のlineCodeを格納したリスト
+        trains : list of list(ODPT.get_train())
+            路線ごとの列車位置情報をまとめたリスト
         update_freq : int
             データの更新間隔
         '''
-
         for i in range(self.distance-1):
-            self.__set_background(line)
-            self.__set_stationpos(line)
-            cache = self.__set_trainpos(
-                line, trains, self.lines[line]["cache"], i)
-            self.lines[line]["strip"].show()
+            for j in range(len(lines)):
+                self.__set_background(strip, lines[j])
+                self.__set_stationpos(strip, lines[j])
+                cache = self.__set_trainpos(strip, 
+                    lines[j], trains[j], self.lines[lines[j]]["cache"], i)
+                # 最終ループ
+                if i == self.distance - 2:
+                    self.lines[lines[j]]["cache"] = cache
+
+            strip.show()
             time.sleep(update_freq/(self.distance-1))
 
-        self.lines[line]["cache"] = cache
-
-    def clear_strip(self, line):
-        '''指定した路線のLEDテープを消灯
+    def clear_strip(self, strip):
+        '''LEDテープを消灯
 
         Parameters
         ----------
-        line : str
-            路線のlineCode
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
         '''
 
-        for i in range(self.lines[line]["strip"].numPixels()):
-            self.lines[line]["strip"].setPixelColor(i, Color(0, 0, 0))
-        self.lines[line]["strip"].show()
+        for i in range(strip.numPixels()):
+            strip.setPixelColor(i, Color(0, 0, 0))
+        strip.show()
 
-    def __set_background(self, line):
+    def __set_background(self, strip, line):
         '''路線の暗色をLEDに設定
 
         Parameters
         ----------
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
         line : str
             路線のlineCode
         '''
 
         for i in range((len(self.stations[line]) - 1) * self.distance):
-            self.lines[line]["strip"].setPixelColor(
-                i, Color(*self.lines[line]["groundcolor"]))
+            strip.setPixelColor(
+                i+self.lines[line]["offset"], Color(*self.lines[line]["groundcolor"]))
 
-    def __set_stationpos(self, line):
+    def __set_stationpos(self, strip, line):
         '''路線の駅位置をLEDに設定
 
         Parameters
         ----------
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
         line : str
             路線のlineCode
         '''
         for i in range(len(self.stations[line])):
-            self.lines[line]["strip"].setPixelColor(
-                i*self.distance, Color(*self.sta_color))
+            strip.setPixelColor(
+                i*self.distance+self.lines[line]["offset"], Color(*self.sta_color))
 
-    def __set_trainpos(self, line, trains, cache, movingpos):
+    def __set_trainpos(self, strip, line, trains, cache, movingpos):
         '''
         Parameters
         ----------
+        strip : Adafruit_NeoPixel()
+            LEDテープのインスタンス
         line : str
             路線のlineCode
         trains : list
@@ -154,8 +175,8 @@ class LEDCtrl():
                 from_sta_index = self.stations[line][trains[i]
                                                      ["odpt:fromStation"]]
                 lednum = from_sta_index*self.distance
-                self.lines[line]["strip"].setPixelColor(
-                    lednum, Color(*self.lines[line]["traincolor"]))
+                strip.setPixelColor(
+                    lednum + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
 
             # 駅間(キャッシュに列車番号存在)
             # キャッシュから列車番号を検索
@@ -177,13 +198,13 @@ class LEDCtrl():
                     if line == "E" \
                         and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
                         and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
-                        self.__set_strip_betw_sta(line, lednum, 1)
+                        self.__set_strip_betw_sta(strip, line, lednum, 1)
                     # ナンバリング正方向
                     elif from_sta_index < to_sta_index:
-                        self.__set_strip_betw_sta(line, lednum, 1)
+                        self.__set_strip_betw_sta(strip, line, lednum, 1)
                     # ナンバリング負方向
                     else:
-                        self.__set_strip_betw_sta(line, lednum, -1)
+                        self.__set_strip_betw_sta(strip, line, lednum, -1)
 
                 # 駅間列車位置更新時
                 else:
@@ -193,7 +214,7 @@ class LEDCtrl():
                         and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
 
                         lednum = self.__set_maruouchi_betw_sta(
-                            line, trains, i, movingpos)
+                            strip, line, trains, i, movingpos)
 
                     # 大江戸線特定区間 (新宿西口 -> 都庁前)
                     elif line == "E" \
@@ -202,18 +223,18 @@ class LEDCtrl():
 
                         from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
                         lednum = from_sta_index * self.distance + movingpos
-                        self.__set_strip_betw_sta(line, lednum, 1)
+                        self.__set_strip_betw_sta(strip, line, lednum, 1)
 
                     # 大江戸線特定区間 (都庁前 -> 新宿西口)
                     elif line == "E" \
                         and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.Tochomae" \
                         and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi":
 
-                        lednum = self.__set_oedo_betw_sta(line, trains, i, movingpos)
+                        lednum = self.__set_oedo_betw_sta(strip, line, trains, i, movingpos)
 
                     else:
                         lednum = self.__set_normal_betw_sta(
-                            line, trains, i, movingpos)
+                            strip, line, trains, i, movingpos)
 
             # 駅間
             else:
@@ -223,7 +244,7 @@ class LEDCtrl():
                     and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
                     
                     lednum = self.__set_maruouchi_betw_sta(
-                        line, trains, i, movingpos)
+                        strip, line, trains, i, movingpos)
 
                 # 大江戸線特定区間 (新宿西口 -> 都庁前)
                 elif line == "E" \
@@ -232,34 +253,34 @@ class LEDCtrl():
 
                     from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
                     lednum = from_sta_index * self.distance + movingpos
-                    self.__set_strip_betw_sta(line, lednum, 1)
+                    self.__set_strip_betw_sta(strip, line, lednum, 1)
                 
                 # 大江戸線特定区間 (都庁前 -> 新宿西口)
                 elif line == "E" \
                     and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.Tochomae" \
                     and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi":
 
-                    lednum = self.__set_oedo_betw_sta(line, trains, i, movingpos)
+                    lednum = self.__set_oedo_betw_sta(strip, line, trains, i, movingpos)
 
                 else:
                     lednum = self.__set_normal_betw_sta(
-                        line, trains, i, movingpos)
+                        strip, line, trains, i, movingpos)
 
             # キャッシュ生成
             self.__set_traincache(cache_new, trains[i], lednum)
 
         return cache_new
 
-    def __set_strip_betw_sta(self, line, lednum, direction):
+    def __set_strip_betw_sta(self, strip, line, lednum, direction):
         '''LEDテープに駅間の列車を描画
         '''
 
-        self.lines[line]["strip"].setPixelColor(
-            lednum, Color(*self.lines[line]["traincolor"]))
-        self.lines[line]["strip"].setPixelColor(
-            lednum + direction, Color(*self.lines[line]["traincolor"]))
+        strip.setPixelColor(
+            lednum + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
+        strip.setPixelColor(
+            lednum + direction + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
 
-    def __set_normal_betw_sta(self, line, trains, i, movingpos):
+    def __set_normal_betw_sta(self, strip, line, trains, i, movingpos):
         '''通常時の駅間の列車の位置設定
         '''
 
@@ -269,16 +290,16 @@ class LEDCtrl():
         # ナンバリング正方向
         if from_sta_index < to_sta_index:
             lednum = from_sta_index*self.distance + movingpos
-            self.__set_strip_betw_sta(line, lednum, 1)
+            self.__set_strip_betw_sta(strip, line, lednum, 1)
 
         # ナンバリング負方向
         else:
             lednum = from_sta_index*self.distance - movingpos
-            self.__set_strip_betw_sta(line, lednum, -1)
+            self.__set_strip_betw_sta(strip, line, lednum, -1)
 
         return lednum
 
-    def __set_maruouchi_betw_sta(self, line, trains, i, movingpos):
+    def __set_maruouchi_betw_sta(self, strip, line, trains, i, movingpos):
         '''丸ノ内線特定区間の列車の位置設定
         '''
 
@@ -289,19 +310,19 @@ class LEDCtrl():
         # 出発直後: 中野坂上駅のledと支線の最初のLEDを点灯
         if movingpos == 0:
             lednum = from_sta_index*self.distance
-            self.lines[line]["strip"].setPixelColor(
-                lednum, Color(*self.lines[line]["traincolor"]))
-            self.lines[line]["strip"].setPixelColor(
-                to_sta_index*self.distance - self.distance + 1, Color(*self.lines[line]["traincolor"]))
+            strip.setPixelColor(
+                lednum + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
+            strip.setPixelColor(
+                to_sta_index*self.distance - self.distance + 1 + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
 
         # それ以降
         else:
             lednum = to_sta_index*self.distance - self.distance + movingpos
-            self.__set_strip_betw_sta(line, lednum, 1)
+            self.__set_strip_betw_sta(strip, line, lednum, 1)
 
         return lednum
 
-    def __set_oedo_betw_sta(self, line, trains, i, movingpos):
+    def __set_oedo_betw_sta(self, strip, line, trains, i, movingpos):
         '''大江戸線特定区間の列車の位置設定
         '''
 
@@ -312,15 +333,15 @@ class LEDCtrl():
         # 出発直後: 都庁前駅のledと都庁前-新宿西口間の最初のLEDを点灯
         if movingpos == 0:
             lednum = from_sta_index*self.distance
-            self.lines[line]["strip"].setPixelColor(
-                lednum, Color(*self.lines[line]["traincolor"]))
-            self.lines[line]["strip"].setPixelColor(
-                to_sta_index*self.distance + self.distance - 1, Color(*self.lines[line]["traincolor"]))
+            strip.setPixelColor(
+                lednum + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
+            strip.setPixelColor(
+                to_sta_index*self.distance + self.distance - 1 + self.lines[line]["offset"], Color(*self.lines[line]["traincolor"]))
 
         # それ以降
         else:
             lednum = to_sta_index*self.distance + self.distance - movingpos
-            self.__set_strip_betw_sta(line, lednum, -1)
+            self.__set_strip_betw_sta(strip, line, lednum, -1)
 
         return lednum
 
