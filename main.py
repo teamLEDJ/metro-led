@@ -71,7 +71,7 @@ class Main():
 
                         print(traceback.format_exc())
                         print(f"{datetime.datetime.now().isoformat()} [Warn] Line: {line} Could not get or decode json. Retry after 1 second...")
-                        time.sleep(1)
+                        time.sleep(2)
 
                     # 5回以上失敗した場合，処理を終了
                     if except_count >= 5:
@@ -84,7 +84,7 @@ class Main():
                 else:
                     print(f"{datetime.datetime.now().isoformat()} [Info] Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
                 trains.append(line_trains)
-                time.sleep(0.1)
+                time.sleep(0.2)
 
             self.led.show_strip(strip, lines, trains, self.odpt.update_freq)
             # 例外カウント初期化
