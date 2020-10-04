@@ -26,31 +26,14 @@
 
 ### ハードウェア
 Raspberry PiとLEDテープ**WS2812B**を用意します．  
-Raspberry Piで使用できるハードウェアPWMのChannelが0, 1の2つまでであることから，現状同時に独立制御できるLEDテープは2本までです．  
-そのため，1台のRaspberry Piで表示できる路線は2つまでとなっています．近日中に1本のLEDテープで複数路線が制御できるように改善する予定です．  
+Raspberry Piで使用できるハードウェアPWMのChannelが0, 1の2つまでであることから，同時に独立制御できるLEDテープは2本までです．  
+そのため，1本のLEDテープで複数路線が制御できるように設計されています．  
 | |PWM ch0|PWM ch1|
 |--|--|--|
 |**GPIO**|12 or 18|13 or 19|
 
 #### led_config.jsonの設定
-接続する路線のLEDテープのpwmのch，GPIOの設定は[config/led_config.json](config/led_config.json)で変更します．  
-各路線ごとに設定を行います．各路線は路線記号表記です．[こちら](https://ja.wikipedia.org/wiki/%E9%A7%85%E3%83%8A%E3%83%B3%E3%83%90%E3%83%AA%E3%83%B3%E3%82%B0#%E6%97%A5%E6%9C%AC%E3%81%A7%E3%81%AE%E4%BA%8B%E4%BE%8B)の東京地下鉄，都営地下鉄を参照してください．  
-以下は銀座線(**G**)の設定例です．  
-
-```json
-"G": {
-            "brightness": 70,
-            "gpio": 18, <-- この2つを変更
-            "pwm": 0,   <--
-            "traincolor": [185, 90, 0],
-            "groundcolor": [36, 12, 0],
-            "strip": null,
-            "cache": {}
-        },
-        ...
-```
-
-また，駅間のLEDのドット数は[config/led_config.json](config/led_config.json)内の`led_distance`の値で調整できます．初期状態では`6`なので，駅間のLEDのドット数は6個となります．  
+駅間のLEDのドット数は[config/led_config.json](config/led_config.json)内の`led_distance`の値で調整できます．初期状態では`6`なので，駅間のLEDのドット数は6個となります．  
 
 #### Raspberry PiとLEDテープの接続
 はじめに，LEDテープのGND, +5Vを電源に接続します．  
@@ -73,31 +56,36 @@ sudo pip3 install rpi_ws281x
 ## Usage
 ```
 usage: main.py [-h]
-               [-l [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
+               [-ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
+               [-ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -l [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
-                        表示する路線の路線記号. 独立制御は2本まで. Default: G
+  -ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --ch0-lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
+                        PWM Channel 0に表示する路線の路線記号. Default: G
+  -ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --ch1-lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
+                        PWM Channel 1に表示する路線の路線記号.
 ```
-銀座線を表示する場合，以下コマンドで実行します．  
+PWM Channel 0 (GPIO 12 or 18)に銀座線を表示する場合，以下コマンドで実行します．  
 ```
-sudo python3 main.py -l G
-```
-
-複数路線を同時に表示させる場合は，以下コマンドで実行します．以下は，銀座線と浅草線の場合です．  
-> **注意**: PWMのChannelが異なる路線のみ指定してください！また，指定できる路線は2つまでです．
-```
-sudo python3 main.py -l G A
+sudo python3 main.py -ch0 G
 ```
 
+1つのLEDテープ(PWM Channel 0)に複数路線を同時に表示させる場合は，以下コマンドで実行します．以下は，銀座線と浅草線の場合です．  
+```
+sudo python3 main.py -ch0 G A
+```
+2つのPWM Channelにそれぞれ複数路線を表示させる場合は，以下コマンドで実行します．以下は，Channel 0に銀座線と丸ノ内線，Channel 1に浅草線と三田線を設定する場合です．  
+```
+sudo python3 main.py -ch0 G M -ch1 A I
+```
 ## Others
 ### 路線ごとのLEDの明るさ・色調整
-[config/led_config.json](config/led_config.json)内の設定値を変更することで，明るさや色調整ができます．  
+LEDテープによって個体差があるため，発色具合が良くない場合，[config/led_config.json](config/led_config.json)内の設定値を変更することで，明るさや色調整ができます．  
+- brightness  
+LED自体の明るさを調整できます(0~100). 各路線共通の設定です.  
 - stationcolor [R, G, B]  
 駅の色を調整できます(0~255)．
-- brightness  
-LED自体の明るさを調整できます(0~100).  
 - traincolor [R, G, B]  
 列車の色を調整できます(0~255)．  
 - groundcolor [R, G, B]  
