@@ -47,7 +47,8 @@ class Main():
         self.strips = []
         for i in range(len(self.lines)):
             if self.lines[i] == []:
-                break
+                self.strips.append([])
+                continue
             strip = self.led.setup_strip(self.lines[i], i)
             self.strips.append(strip)
 
@@ -56,7 +57,8 @@ class Main():
     def showline(self):
         for i in range(len(self.lines)):
             if self.lines[i] == []:
-                break
+                print(self.lines)
+                continue
             th = threading.Thread(
                 target=self.__showline_thread, args=(self.strips[i], self.lines[i], ))
             th.setDaemon(True)
@@ -108,8 +110,9 @@ class Main():
 
     def stop(self):
         for i in range(len(self.strips)):
-            self.led.clear_strip(self.strips[i])
-            print(f"{Log.INFO()}Strip{i} is stopped.")
+            if self.strips[i]:
+                self.led.clear_strip(self.strips[i])
+                print(f"{Log.INFO()}Strip{i} is stopped.")
         print(f"{Log.INFO()}LEDs are stopped.")
 
 
