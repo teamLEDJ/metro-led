@@ -7,22 +7,22 @@ import traceback
 from odpt import ODPT
 from ledctrl import LEDCtrl
 
-def get_date():
-    return datetime.datetime.now().isoformat()
-
 class Log():
-
+    @staticmethod
     def get_date():
         return datetime.datetime.now().isoformat()
 
+    @staticmethod
     def INFO():
-        return get_date() + ' \033[36m[Info]\033[0m '
+        return Log.get_date() + ' \033[36m[Info]\033[0m '
 
+    @staticmethod
     def WARN():
-        return get_date() + ' \033[33m[Warn]\033[0m '
+        return Log.get_date() + ' \033[33m[Warn]\033[0m '
 
+    @staticmethod
     def ERROR():
-        return get_date() + ' \033[31m[Error]\033[0m '
+        return Log.get_date() + ' \033[31m[Error]\033[0m '
 
 class Main():
     def __init__(self):
