@@ -193,68 +193,45 @@ class LEDCtrl():
 
                 # 駅間列車位置更新時
                 else:
-                    # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
-                    if line == "M" \
-                        and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" \
-                        and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
-
-                        lednum = self.__set_maruouchi_betw_sta(
-                            line, trains, i, movingpos)
-
-                    # 大江戸線特定区間 (新宿西口 -> 都庁前)
-                    elif line == "E" \
-                        and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
-                        and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
-
-                        from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
-                        lednum = from_sta_index * self.distance + movingpos
-                        self.__set_strip_betw_sta(line, lednum, 1)
-
-                    # 大江戸線特定区間 (都庁前 -> 新宿西口)
-                    elif line == "E" \
-                        and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.Tochomae" \
-                        and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi":
-
-                        lednum = self.__set_oedo_betw_sta(line, trains, i, movingpos)
-
-                    else:
-                        lednum = self.__set_normal_betw_sta(
-                            line, trains, i, movingpos)
+                    lednum = self.__update_betw_sta_trainpos(line, trains, i, movingpos)
 
             # 駅間
             else:
-                # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
-                if line == "M" \
-                    and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" \
-                    and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
-                    
-                    lednum = self.__set_maruouchi_betw_sta(
-                        line, trains, i, movingpos)
-
-                # 大江戸線特定区間 (新宿西口 -> 都庁前)
-                elif line == "E" \
-                    and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
-                    and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
-
-                    from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
-                    lednum = from_sta_index * self.distance + movingpos
-                    self.__set_strip_betw_sta(line, lednum, 1)
-                
-                # 大江戸線特定区間 (都庁前 -> 新宿西口)
-                elif line == "E" \
-                    and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.Tochomae" \
-                    and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi":
-
-                    lednum = self.__set_oedo_betw_sta(line, trains, i, movingpos)
-
-                else:
-                    lednum = self.__set_normal_betw_sta(
-                        line, trains, i, movingpos)
+                lednum = self.__update_betw_sta_trainpos(line, trains, i, movingpos)
 
             # キャッシュ生成
             self.__set_traincache(cache_new, trains[i], lednum)
 
         return cache_new
+    
+    def __update_betw_sta_trainpos(self, line, trains, i, movingpos):
+        # 丸ノ内線支線入線時 (中野坂上 -> 中野新橋)
+        if line == "M" \
+            and trains[i]["odpt:fromStation"] == "odpt.Station:TokyoMetro.Marunouchi.NakanoSakaue" \
+            and trains[i]["odpt:toStation"] == "odpt.Station:TokyoMetro.MarunouchiBranch.NakanoShimbashi":
+                    
+            lednum = self.__set_maruouchi_betw_sta(line, trains, i, movingpos)
+
+        # 大江戸線特定区間 (新宿西口 -> 都庁前)
+        elif line == "E" \
+            and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi" \
+            and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.Tochomae":
+
+            from_sta_index = self.stations[line][trains[i]["odpt:fromStation"]]
+            lednum = from_sta_index * self.distance + movingpos
+            self.__set_strip_betw_sta(line, lednum, 1)
+                
+        # 大江戸線特定区間 (都庁前 -> 新宿西口)
+        elif line == "E" \
+            and trains[i]["odpt:fromStation"] == "odpt.Station:Toei.Oedo.Tochomae" \
+            and trains[i]["odpt:toStation"] == "odpt.Station:Toei.Oedo.ShinjukuNishiguchi":
+
+            lednum = self.__set_oedo_betw_sta(line, trains, i, movingpos)
+
+        else:
+            lednum = self.__set_normal_betw_sta(line, trains, i, movingpos)
+
+        return lednum
 
     def __set_strip_betw_sta(self, line, lednum, direction):
         '''LEDテープに駅間の列車を描画
