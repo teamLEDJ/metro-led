@@ -43,14 +43,14 @@ class Main():
         stations = self.odpt.get_stationtable()
         print(f"{Log.INFO()}Stations table is loaded!")
 
-        self.led = LEDCtrl(stations)
-        self.strips = []
+        self.leds = []
         for i in range(len(self.lines)):
             if self.lines[i] == []:
-                self.strips.append([])
+                self.leds.append([])
                 continue
-            strip = self.led.setup_strip(self.lines[i], i)
-            self.strips.append(strip)
+            led = LEDCtrl(stations, self.lines[i], i, self.odpt.update_freq)
+            led.setup_strip()
+            self.leds.append(led)
 
         print(f"{Log.INFO()}LED strips are setuped!")
 
@@ -60,7 +60,7 @@ class Main():
                 continue
             
             th = threading.Thread(
-                target=self.__showline_thread, args=(self.strips[i], self.lines[i], ))
+                target=self.__showline_thread, args=(self.lines[i], i, ))
             th.setDaemon(True)
             th.start()
 
@@ -68,7 +68,7 @@ class Main():
 
             time.sleep(1)
     
-    def __showline_thread(self, strip, lines):
+    def __showline_thread(self, lines, led_idx):
         # 例外カウント
         except_count = 0
 
@@ -104,14 +104,14 @@ class Main():
                 trains.append(line_trains)
                 time.sleep(0.2)
 
-            self.led.show_strip(strip, lines, trains, self.odpt.update_freq)
+            self.leds[led_idx].show_strip(trains)
             # 例外カウント初期化
             except_count = 0
 
     def stop(self):
-        for i in range(len(self.strips)):
-            if self.strips[i]:
-                self.led.clear_strip(self.strips[i])
+        for i in range(len(self.leds)):
+            if self.leds[i]:
+                self.leds[i].clear_strip()
                 print(f"{Log.INFO()}Strip{i} is stopped.")
         print(f"{Log.INFO()}LEDs are stopped.")
 
