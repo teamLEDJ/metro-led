@@ -1,0 +1,15 @@
+{
+    "G": "odpt.Railway:TokyoMetro.Ginza",
+    "M": "odpt.Railway:TokyoMetro.Marunouchi",
+    "H": "odpt.Railway:TokyoMetro.Hibiya",
+    "T": "odpt.Railway:TokyoMetro.Tozai",
+    "C": "odpt.Railway:TokyoMetro.Chiyoda",
+    "Y": "odpt.Railway:TokyoMetro.Yurakucho",
+    "Z": "odpt.Railway:TokyoMetro.Hanzomon",
+    "N": "odpt.Railway:TokyoMetro.Namboku",
+    "F": "odpt.Railway:TokyoMetro.Fukutoshin",
+    "A": "odpt.Railway:Toei.Asakusa",
+    "I": "odpt.Railway:Toei.Mita",
+    "S": "odpt.Railway:Toei.Shinjuku",
+    "E": "odpt.Railway:Toei.Oedo"
+}
