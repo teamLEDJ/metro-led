@@ -8,6 +8,7 @@
             "S": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Shinjuku&acl:consumerKey=",
             "E": "https://api.odpt.org/api/v4/odpt:Train?odpt:railway=odpt.Railway:Toei.Oedo&acl:consumerKey="
         },
+        "Trains": "https://api.odpt.org/api/v4/odpt:Train?acl:consumerKey=",
         "Railway": "https://api.odpt.org/api/v4/odpt:Railway?odpt:operator=odpt.Operator:Toei&acl:consumerKey="
     },
     "metro": {
@@ -23,6 +24,7 @@
             "N": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Namboku&acl:consumerKey=",
             "F": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&odpt:railway=odpt.Railway:TokyoMetro.Fukutoshin&acl:consumerKey="
         },
+        "Trains": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Train&acl:consumerKey=",
         "Railway": "https://api.tokyometroapp.jp/api/v2/datapoints?rdf:type=odpt:Railway&acl:consumerKey="
     }
 }
