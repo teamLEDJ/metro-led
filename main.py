@@ -73,37 +73,31 @@ class Main():
         except_count = 0
 
         while True:
-            trains = []
+            try:
+                # 表示路線の列車位置を取得
+                trains = self.odpt.get_lines_train(lines)
+            except:
+                # 取得失敗時
+                except_count += 1
+                print(traceback.format_exc())
+                print(f"{Log.WARN()}Could not get or decode json. Retry after 2 second...")
+                time.sleep(2)
 
+                # 5回以上失敗した場合，処理を終了
+                if except_count >= 5:
+                    print(f"{Log.ERROR()}Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
+                    return False
+
+                continue
+            
+            # ログ出力
             for i in range(len(lines)):
-                line = lines[i]
-
-                while True:
-                    try:
-                        line_trains = self.odpt.get_train(line)
-                        break
-
-                    # 例外: json取得失敗など
-                    except:
-                        except_count += 1
-
-                        print(traceback.format_exc())
-                        print(f"{Log.WARN()}Line: {line} Could not get or decode json. Retry after 1 second...")
-                        time.sleep(2)
-
-                    # 5回以上失敗した場合，処理を終了
-                    if except_count >= 5:
-                        print(f"{Log.ERROR()}Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
-                        return False
-                
                 # 列車が存在しない場合
-                if line_trains == []:
-                    print(f"{Log.WARN()}Line: {line} There are no trains currently running!")
+                if trains[i] == []:
+                    print(f"{Log.WARN()}Line: {lines[i]} There are no trains currently running!")
                 else:
-                    print(f"{Log.INFO()}Train data is updated. Line: {line} Date: {line_trains[0]['dc:date']}")
-                trains.append(line_trains)
-                time.sleep(0.2)
-
+                    print(f"{Log.INFO()}Train data is updated. Line: {lines[i]} Date: {trains[i][0]['dc:date']}")
+            
             self.leds[led_idx].show_strip(trains)
             # 例外カウント初期化
             except_count = 0
