@@ -97,6 +97,34 @@ class LEDCtrl():
 
             self.__strip.show()
             time.sleep(self.update_freq/(self.distance-1))
+        
+    def test_strip(self):
+        '''LED点灯テスト
+        '''
+        # wipe
+        for i in range(len(self.use_lines)):
+            for j in range((len(self.stations[self.use_lines[i]]) - 1) * self.distance + 1):
+                self.__strip.setPixelColor(
+                    j+self.lines[self.use_lines[i]]["offset"],
+                    Color(*self.lines[self.use_lines[i]]["traincolor"]))
+                if j % 7 == 0:
+                    self.__strip.setPixelColor(
+                        j+self.lines[self.use_lines[i]]["offset"], Color(*self.sta_color))
+                self.__strip.show()
+                time.sleep(0.01)
+        
+        # fade
+        for i in range(2):
+            for j in range(20, 120):
+                self.__strip.setBrightness(j)
+                self.__strip.show()
+                time.sleep(0.02)
+            for j in range(120, 20, -1):
+                self.__strip.setBrightness(j)
+                self.__strip.show()
+                time.sleep(0.02)
+
+        self.__strip.setBrightness(self.brightness)
 
     def clear_strip(self):
         '''LEDテープを消灯

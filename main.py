@@ -71,6 +71,11 @@ class Main():
     def __showline_thread(self, lines, led_idx):
         # 例外カウント
         except_count = 0
+        
+        # 点灯確認
+        print(f"{Log.INFO()}Strip{led_idx}: Testing LEDs...")
+        self.leds[led_idx].test_strip()
+        print(f"{Log.INFO()}Strip{led_idx}: Started real-time display!")
 
         while True:
             try:
