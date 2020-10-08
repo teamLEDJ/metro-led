@@ -41,7 +41,7 @@ class Main():
 
         self.odpt = ODPT()
         stations = self.odpt.get_stationtable()
-        print(f"{Log.INFO()}Stations table is loaded!")
+        print(f"{Log.INFO()}Loaded Station table!")
 
         self.leds = []
         for i in range(len(self.lines)):
@@ -52,7 +52,7 @@ class Main():
             led.setup_strip()
             self.leds.append(led)
 
-        print(f"{Log.INFO()}LED strips are setuped!")
+        print(f"{Log.INFO()}Setuped LED strips!")
 
     def showline(self):
         for i in range(len(self.lines)):
@@ -64,7 +64,7 @@ class Main():
             th.setDaemon(True)
             th.start()
 
-            print(f"{Log.INFO()}Strip{i} thread is started!")
+            print(f"{Log.INFO()}Started strip{i} thread!")
 
             time.sleep(1)
     
@@ -96,7 +96,7 @@ class Main():
                 if trains[i] == []:
                     print(f"{Log.WARN()}Line: {lines[i]} There are no trains currently running!")
                 else:
-                    print(f"{Log.INFO()}Train data is updated. Line: {lines[i]} Date: {trains[i][0]['dc:date']}")
+                    print(f"{Log.INFO()}Line: {lines[i]} Updated Train data. Date: {trains[i][0]['dc:date']}")
             
             self.leds[led_idx].show_strip(trains)
             # 例外カウント初期化
@@ -106,8 +106,8 @@ class Main():
         for i in range(len(self.leds)):
             if self.leds[i]:
                 self.leds[i].clear_strip()
-                print(f"{Log.INFO()}Strip{i} is stopped.")
-        print(f"{Log.INFO()}LEDs are stopped.")
+                print(f"{Log.INFO()}Stopped Strip{i}.")
+        print(f"{Log.INFO()}Stopped LEDs. Exit")
 
 
 if __name__ == "__main__":
