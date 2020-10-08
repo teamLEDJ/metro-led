@@ -64,14 +64,14 @@ class Main():
             th.setDaemon(True)
             th.start()
 
-            print(f"{Log.INFO()}Started strip{i} thread!")
-
             time.sleep(1)
     
     def __showline_thread(self, lines, led_idx):
+        print(f"{Log.INFO()}Strip{led_idx}: Started thread!")
+
         # 例外カウント
         except_count = 0
-        
+
         # 点灯確認
         print(f"{Log.INFO()}Strip{led_idx}: Testing LEDs...")
         self.leds[led_idx].test_strip()
@@ -85,12 +85,12 @@ class Main():
                 # 取得失敗時
                 except_count += 1
                 print(traceback.format_exc())
-                print(f"{Log.WARN()}Could not get or decode json. Retry after 2 second...")
+                print(f"{Log.WARN()}Strip{led_idx}: Could not get or decode json. Retry after 2 second...")
                 time.sleep(2)
 
                 # 5回以上失敗した場合，処理を終了
                 if except_count >= 5:
-                    print(f"{Log.ERROR()}Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
+                    print(f"{Log.ERROR()}Strip{led_idx}: Processing failed 5 times. Press Ctrl + C to terminate the main thread.")
                     return False
 
                 continue
@@ -99,9 +99,9 @@ class Main():
             for i in range(len(lines)):
                 # 列車が存在しない場合
                 if trains[i] == []:
-                    print(f"{Log.WARN()}Line: {lines[i]} There are no trains currently running!")
+                    print(f"{Log.WARN()}Line {lines[i]}: There are no trains currently running!")
                 else:
-                    print(f"{Log.INFO()}Line: {lines[i]} Updated Train data. Date: {trains[i][0]['dc:date']}")
+                    print(f"{Log.INFO()}Line {lines[i]}: Updated Train data. Date: {trains[i][0]['dc:date']}")
             
             self.leds[led_idx].show_strip(trains)
             # 例外カウント初期化
@@ -111,8 +111,8 @@ class Main():
         for i in range(len(self.leds)):
             if self.leds[i]:
                 self.leds[i].clear_strip()
-                print(f"{Log.INFO()}Stopped Strip{i}.")
-        print(f"{Log.INFO()}Stopped LEDs. Exit")
+                print(f"{Log.INFO()}Strip{i}: Stopped LEDs.")
+        print(f"{Log.INFO()}Stopped all LEDs. Exit")
 
 
 if __name__ == "__main__":
