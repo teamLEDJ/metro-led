@@ -107,7 +107,7 @@ class LEDCtrl():
                 self.__strip.setPixelColor(
                     j+self.lines[self.use_lines[i]]["offset"],
                     Color(*self.lines[self.use_lines[i]]["traincolor"]))
-                if j % 7 == 0:
+                if j % self.distance == 0:
                     self.__strip.setPixelColor(
                         j+self.lines[self.use_lines[i]]["offset"], Color(*self.sta_color))
                 self.__strip.show()
