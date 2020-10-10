@@ -60,6 +60,7 @@ sudo pip3 install rpi_ws281x
 usage: main.py [-h]
                [-ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
                [-ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
+               [--test]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -67,6 +68,7 @@ optional arguments:
                         PWM Channel 0に表示する路線の路線記号. Default: G
   -ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --ch1-lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
                         PWM Channel 1に表示する路線の路線記号.
+  --test                起動時にLED動作テストを行う.
 ```
 PWM Channel 0 (GPIO 12 or 18)に銀座線を表示する場合，以下コマンドで実行します．  
 ```
