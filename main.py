@@ -35,8 +35,10 @@ class Main():
                                 help="PWM Channel 1に表示する路線の路線記号. ", default=[],
                                 type=str, choices=["G", "M", "H", "T", "C", "Y", "Z", "N", "F", "A", "I", "S", "E"],
                                 nargs='*')
-        self.args = self.parser.parse_args()
+        self.parser.add_argument("--test",  action='store_true', help="起動時にLED動作テストを行う.")
 
+        self.args = self.parser.parse_args()
+        self.test = self.args.test
         self.lines = [self.args.ch0_lines, self.args.ch1_lines]
 
         self.odpt = ODPT()
@@ -73,8 +75,9 @@ class Main():
         except_count = 0
 
         # 点灯確認
-        print(f"{Log.INFO()}Strip{led_idx}: Testing LEDs...")
-        self.leds[led_idx].test_strip()
+        if self.test:
+            print(f"{Log.INFO()}Strip{led_idx}: Testing LEDs...")
+            self.leds[led_idx].test_strip()
         print(f"{Log.INFO()}Strip{led_idx}: Started real-time display!")
 
         while True:
