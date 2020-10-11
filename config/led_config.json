@@ -1,6 +1,6 @@
 {
     "led_distance": 6,
-    "stationcolor": [60, 60, 60],
+    "stationcolor": [70, 70, 70],
     "brightness": 70,
     "lines": {
         "G": {
@@ -16,8 +16,8 @@
             "cache": {}
         },
         "H": {
-            "traincolor": [171, 161, 140],
-            "groundcolor": [20, 19, 17],
+            "traincolor": [145, 161, 90],
+            "groundcolor": [29, 32, 18],
             "strip": null,
             "cache": {}
         },
