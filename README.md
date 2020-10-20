@@ -60,7 +60,7 @@ sudo pip3 install rpi_ws281x
 usage: main.py [-h]
                [-ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
                [-ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
-               [--test]
+               [-l LED_CONFIG] [--test]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -68,6 +68,8 @@ optional arguments:
                         PWM Channel 0に表示する路線の路線記号. Default: G
   -ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]], --ch1-lines [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]
                         PWM Channel 1に表示する路線の路線記号.
+  -l LED_CONFIG, --led-config LED_CONFIG
+                        LEDの設定ファイル. Default: ./config/led_config.json
   --test                起動時にLED動作テストを行う.
 ```
 PWM Channel 0 (GPIO 12 or 18)に銀座線を表示する場合，以下コマンドで実行します．  
@@ -83,7 +85,18 @@ sudo python3 main.py -ch0 G A
 ```
 sudo python3 main.py -ch0 G M -ch1 A I
 ```
-## Others
+### プリセットのLED設定値を使用する場合
+プリセットの設定ファイルのパスをオプションに加えます  
+#### WS2812B
+```
+sudo python3 main.py -ch0 G -l ./config/WS2812B.json
+```
+#### WS2812B ECO
+```
+sudo python3 main.py -ch0 G -l ./config/WS2812B_ECO.json
+```
+
+## Customize
 ### 路線ごとのLEDの明るさ・色調整
 LEDテープによって個体差があるため，発色具合が良くない場合，[config/led_config.json](config/led_config.json)内の設定値を変更することで，明るさや色調整ができます．  
 - brightness  
@@ -94,3 +107,5 @@ LED自体の明るさを調整できます(0~255). 各路線共通の設定で�
 列車の色を調整できます(0~255)．  
 - groundcolor [R, G, B]  
 列車がいない場合の色を調整できます(0~255)．  
+- led_distance  
+駅間のLEDドット数を調整できます．
