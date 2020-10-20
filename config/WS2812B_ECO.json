@@ -4,79 +4,79 @@
     "brightness": 70,
     "lines": {
         "G": {
-            "traincolor": [185, 90, 0],
-            "groundcolor": [36, 12, 0],
+            "traincolor": [255, 50, 0],
+            "groundcolor": [45, 9, 0],
             "strip": null,
             "cache": {}
         },
         "M": {
-            "traincolor": [200, 6, 8],
-            "groundcolor": [30, 1, 2],
+            "traincolor": [255, 0, 0],
+            "groundcolor": [45, 0, 0],
             "strip": null,
             "cache": {}
         },
         "H": {
-            "traincolor": [145, 161, 90],
-            "groundcolor": [29, 32, 18],
+            "traincolor": [160, 90, 40],
+            "groundcolor": [24, 13, 6],
             "strip": null,
             "cache": {}
         },
         "T": {
-            "traincolor": [0, 155, 191],
-            "groundcolor": [0, 31, 38],
+            "traincolor": [0, 112, 137],
+            "groundcolor": [0, 17, 21],
             "strip": null,
             "cache": {}
         },
         "C": {
-            "traincolor": [0, 200, 50],
-            "groundcolor": [0, 40, 14],
+            "traincolor": [0, 220, 40],
+            "groundcolor": [0, 39, 6],
             "strip": null,
             "cache": {}
         },
         "Y": {
-            "traincolor": [199, 127, 22],
-            "groundcolor": [39, 25, 5],
+            "traincolor": [199, 60, 10],
+            "groundcolor": [39, 12, 1],
             "strip": null,
             "cache": {}
         },
         "Z": {
-            "traincolor": [143, 60, 200],
-            "groundcolor": [28, 12, 40],
+            "traincolor": [128, 45, 193],
+            "groundcolor": [25, 9, 38],
             "strip": null,
             "cache": {}
         },
         "N": {
-            "traincolor": [0, 180, 80],
-            "groundcolor": [0, 36, 16],
+            "traincolor": [0, 190, 70],
+            "groundcolor": [0, 24, 9],
             "strip": null,
             "cache": {}
         },
         "F": {
-            "traincolor": [200, 55, 0],
-            "groundcolor": [40, 11, 0],
+            "traincolor": [255, 20, 0],
+            "groundcolor": [40, 6, 0],
             "strip": null,
             "cache": {}
         },
         "A": {
-            "traincolor": [200, 35, 10],
-            "groundcolor": [40, 7, 2],
+            "traincolor": [255, 27, 20],
+            "groundcolor": [50, 7, 6],
             "strip": null,
             "cache": {}
         },
         "I": {
-            "traincolor": [0, 40, 200],
-            "groundcolor": [0, 8, 40],
+            "traincolor": [0, 60, 200],
+            "groundcolor": [0, 6, 20],
             "strip": null,
             "cache": {}
         },
         "S": {
-            "traincolor": [179, 193, 25],
-            "groundcolor": [36, 38, 5],
+            "traincolor": [150, 193, 22],
+            "groundcolor": [26, 28, 6],
             "strip": null,
             "cache": {}
         },
         "E": {
-            "traincolor": [182, 10, 43],
+            "traincolor": [255, 6, 43],
             "groundcolor": [36, 2, 8],
             "strip": null,
             "cache": {}
