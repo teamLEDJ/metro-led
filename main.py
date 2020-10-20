@@ -35,10 +35,14 @@ class Main():
                                 help="PWM Channel 1に表示する路線の路線記号. ", default=[],
                                 type=str, choices=["G", "M", "H", "T", "C", "Y", "Z", "N", "F", "A", "I", "S", "E"],
                                 nargs='*')
+        self.parser.add_argument("-l", "--led-config", action="store",
+                                help="LEDの設定ファイル. Default: ./config/led_config.json", default="./config/led_config.json",
+                                type=str)
         self.parser.add_argument("--test",  action='store_true', help="起動時にLED動作テストを行う.")
 
         self.args = self.parser.parse_args()
         self.test = self.args.test
+        self.cf_path = self.args.led_config
         self.lines = [self.args.ch0_lines, self.args.ch1_lines]
 
         self.odpt = ODPT()
@@ -50,7 +54,7 @@ class Main():
             if self.lines[i] == []:
                 self.leds.append([])
                 continue
-            led = LEDCtrl(stations, self.lines[i], i, self.odpt.update_freq)
+            led = LEDCtrl(stations, self.lines[i], i, self.odpt.update_freq, self.cf_path)
             led.setup_strip()
             self.leds.append(led)
 
