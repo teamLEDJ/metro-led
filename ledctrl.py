@@ -1,5 +1,8 @@
 import json
 import time
+import sys
+
+from log import Log
 from rpi_ws281x import *
 
 
@@ -38,8 +41,12 @@ class LEDCtrl():
     '''
 
     def __init__(self, stations, use_lines, channel, update_freq, jsonpath="./config/led_config.json"):
-        with open(jsonpath, 'r') as cf:
-            config = json.load(cf)
+        try:
+            with open(jsonpath, 'r') as cf:
+                config = json.load(cf)
+        except FileNotFoundError:
+            print(f"{Log.ERROR()}Not Found {jsonpath}! Exit.")
+            sys.exit()
 
         self.__FREQ_HZ = 800000
         self.__DMA = 10
