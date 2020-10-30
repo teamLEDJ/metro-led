@@ -117,7 +117,7 @@ class ODPT():
 
         return trains_data
 
-    def get_stationtable(self):
+    def get_stationtable(self, jsonpath="./data/station_table.json"):
         '''静的ファイルから駅テーブルを取得する
 
         Returns
@@ -125,7 +125,6 @@ class ODPT():
         sta_table : dict
             路線ごとの駅テーブル
         '''
-        jsonpath = f"./data/station_table.json"
 
         with open(jsonpath, 'r') as sta:
             sta_table = json.load(sta)
