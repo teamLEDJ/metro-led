@@ -1,5 +1,8 @@
 import requests
 import json
+import sys
+
+from log import Log
 
 
 class ODPT():
@@ -125,9 +128,12 @@ class ODPT():
         sta_table : dict
             路線ごとの駅テーブル
         '''
-
-        with open(jsonpath, 'r') as sta:
-            sta_table = json.load(sta)
+        try:
+            with open(jsonpath, 'r') as sta:
+                sta_table = json.load(sta)
+        except FileNotFoundError:
+            print(f"{Log.ERROR()}Not Found {jsonpath}! Exit.")
+            sys.exit()
 
         return sta_table
 
