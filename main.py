@@ -22,11 +22,15 @@ class Main():
         self.parser.add_argument("-l", "--led-config", action="store",
                                 help="LEDの設定ファイル. Default: ./config/led_config.json", default="./config/led_config.json",
                                 type=str)
+        self.parser.add_argument("-s", "--station-table", action="store",
+                                help="駅番号の定義ファイル. Default: ./data/station_table.json", default="./data/station_table.json",
+                                type=str)
         self.parser.add_argument("--test",  action='store_true', help="起動時にLED動作テストを行う.")
 
         self.args = self.parser.parse_args()
         self.test = self.args.test
         self.cf_path = self.args.led_config
+        self.st_path = self.args.station_table
         self.lines = [self.args.ch0_lines, self.args.ch1_lines]
 
         self.odpt = ODPT()
