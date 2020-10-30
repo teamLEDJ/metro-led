@@ -34,7 +34,7 @@ class Main():
         self.lines = [self.args.ch0_lines, self.args.ch1_lines]
 
         self.odpt = ODPT()
-        stations = self.odpt.get_stationtable()
+        stations = self.odpt.get_stationtable(self.st_path)
         print(f"{Log.INFO()}Loaded Station table!")
 
         self.leds = []
