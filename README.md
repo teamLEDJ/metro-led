@@ -60,7 +60,7 @@ sudo pip3 install rpi_ws281x
 usage: main.py [-h]
                [-ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
                [-ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
-               [-l LED_CONFIG] [--test]
+               [-l LED_CONFIG] [-s STATION_TABLE] [--test]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -70,6 +70,8 @@ optional arguments:
                         PWM Channel 1に表示する路線の路線記号.
   -l LED_CONFIG, --led-config LED_CONFIG
                         LEDの設定ファイル. Default: ./config/led_config.json
+  -s STATION_TABLE, --station-table STATION_TABLE
+                        駅番号の定義ファイル. Default: ./data/station_table.json
   --test                起動時にLED動作テストを行う.
 ```
 PWM Channel 0 (GPIO 12 or 18)に銀座線を表示する場合，以下コマンドで実行します．  
