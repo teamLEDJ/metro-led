@@ -1,0 +1,85 @@
+{
+    "led_distance": 4,
+    "stationcolor": [70, 70, 70],
+    "brightness": 70,
+    "lines": {
+        "G": {
+            "traincolor": [255, 50, 0],
+            "groundcolor": [45, 9, 0],
+            "strip": null,
+            "cache": {}
+        },
+        "M": {
+            "traincolor": [255, 0, 0],
+            "groundcolor": [45, 0, 0],
+            "strip": null,
+            "cache": {}
+        },
+        "H": {
+            "traincolor": [160, 90, 40],
+            "groundcolor": [24, 13, 6],
+            "strip": null,
+            "cache": {}
+        },
+        "T": {
+            "traincolor": [0, 112, 137],
+            "groundcolor": [0, 17, 21],
+            "strip": null,
+            "cache": {}
+        },
+        "C": {
+            "traincolor": [0, 220, 40],
+            "groundcolor": [0, 39, 6],
+            "strip": null,
+            "cache": {}
+        },
+        "Y": {
+            "traincolor": [199, 60, 10],
+            "groundcolor": [39, 12, 1],
+            "strip": null,
+            "cache": {}
+        },
+        "Z": {
+            "traincolor": [128, 45, 193],
+            "groundcolor": [25, 9, 38],
+            "strip": null,
+            "cache": {}
+        },
+        "N": {
+            "traincolor": [0, 190, 70],
+            "groundcolor": [0, 24, 9],
+            "strip": null,
+            "cache": {}
+        },
+        "F": {
+            "traincolor": [255, 20, 0],
+            "groundcolor": [40, 6, 0],
+            "strip": null,
+            "cache": {}
+        },
+        "A": {
+            "traincolor": [255, 27, 20],
+            "groundcolor": [50, 7, 6],
+            "strip": null,
+            "cache": {}
+        },
+        "I": {
+            "traincolor": [0, 60, 200],
+            "groundcolor": [0, 6, 20],
+            "strip": null,
+            "cache": {}
+        },
+        "S": {
+            "traincolor": [150, 193, 22],
+            "groundcolor": [26, 28, 6],
+            "strip": null,
+            "cache": {}
+        },
+        "E": {
+            "traincolor": [255, 6, 43],
+            "groundcolor": [36, 2, 8],
+            "strip": null,
+            "cache": {}
+        }
+    }
+}
