@@ -1,7 +1,7 @@
 {
     "led_distance": 4,
     "stationcolor": [70, 70, 70],
-    "brightness": 70,
+    "brightness": 42,
     "lines": {
         "G": {
             "traincolor": [255, 50, 0],
