@@ -96,14 +96,16 @@ class LEDCtrl():
             for j in range(len(self.use_lines)):
                 self.__set_background(self.use_lines[j])
                 self.__set_stationpos(self.use_lines[j])
+                time.sleep(0.1)
+                self.__strip.show()
                 cache = self.__set_trainpos( 
                     self.use_lines[j], trains[j], self.lines[self.use_lines[j]]["cache"], i)
                 # 最終ループ
                 if i == self.distance - 2:
                     self.lines[self.use_lines[j]]["cache"] = cache
 
-            self.__strip.show()
-            time.sleep(self.update_freq/(self.distance-1))
+                self.__strip.show()
+            time.sleep(self.update_freq/(self.distance-1) - 0.1)
         
     def test_strip(self):
         '''LED点灯テスト
