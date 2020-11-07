@@ -6,78 +6,91 @@
         "G": {
             "traincolor": [255, 50, 0],
             "groundcolor": [45, 9, 0],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "M": {
             "traincolor": [255, 0, 0],
             "groundcolor": [45, 0, 0],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "H": {
             "traincolor": [160, 90, 40],
             "groundcolor": [24, 13, 6],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "T": {
             "traincolor": [0, 112, 137],
             "groundcolor": [0, 17, 21],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "C": {
             "traincolor": [0, 220, 40],
             "groundcolor": [0, 39, 6],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "Y": {
             "traincolor": [199, 60, 10],
             "groundcolor": [39, 12, 1],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "Z": {
             "traincolor": [128, 45, 193],
             "groundcolor": [25, 9, 38],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "N": {
             "traincolor": [0, 190, 70],
             "groundcolor": [0, 24, 9],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "F": {
             "traincolor": [255, 20, 0],
             "groundcolor": [40, 6, 0],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "A": {
             "traincolor": [255, 27, 20],
             "groundcolor": [50, 7, 6],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "I": {
             "traincolor": [0, 60, 200],
             "groundcolor": [0, 6, 20],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "S": {
             "traincolor": [150, 193, 22],
             "groundcolor": [26, 28, 6],
+            "reverse": false,
             "strip": null,
             "cache": {}
         },
         "E": {
             "traincolor": [255, 6, 43],
             "groundcolor": [36, 2, 8],
+            "reverse": false,
             "strip": null,
             "cache": {}
         }
