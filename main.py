@@ -25,10 +25,13 @@ class Main():
         self.parser.add_argument("-s", "--station-table", action="store",
                                 help="駅番号の定義ファイル. Default: ./data/station_table.json", default="./data/station_table.json",
                                 type=str)
-        self.parser.add_argument("--test",  action='store_true', help="起動時にLED動作テストを行う.")
+        self.parser.add_argument("-a", "--animation",  action='store',
+                                help="起動時にLEDアニメーションを行う. 13線全ての路線表示を行う場合，normal, history，routenumを選択可能． \
+                                normal: 接続順に点灯, history: 開業順に点灯, routenum: 路線番号順に点灯",
+                                default="", choices=["normal", "history", "routenum"])
 
         self.args = self.parser.parse_args()
-        self.test = self.args.test
+        self.anim_param = self.args.animation
         self.cf_path = self.args.led_config
         self.st_path = self.args.station_table
         self.lines = [self.args.ch0_lines, self.args.ch1_lines]
@@ -48,6 +51,33 @@ class Main():
 
         print(f"{Log.INFO()}Setuped LED strips!")
 
+        # アニメーション
+        if self.anim_param:
+            self.anim_test(self.anim_param)
+
+    def anim_test(self, param=""):
+        # normal用の表示順リストを作成
+        line_list = self.args.ch0_lines + self.args.ch1_lines
+
+        # 全路線が選択された場合のみ. historyもしくはroutenumを適用
+        if len(line_list) < 13 and param != "normal":
+            param = "normal"
+            print(f"{Log.WARN()}Must select all lines (13 lines) to set animation mode \"history\" and \"routenum\". Set animation mode \"normal\".")
+
+        elif param == "history":
+            line_list = ["G", "M", "A", "H", "T", "I", "C", "Y", "Z", "S", "N", "E", "F"]
+
+        elif param == "routenum":
+            line_list = ["A", "H", "G", "M", "T", "I", "N", "Y", "C", "S", "Z", "E", "F"]
+
+        print(f"{Log.INFO()}Show animation! Mode: {param}")
+
+        # 表示
+        for i in range(len(line_list)):
+            if line_list[i] in self.args.ch0_lines: ch = 0
+            else: ch = 1
+            self.leds[ch].wipe_strip(line_list[i])
+
     def showline(self):
         for i in range(len(self.lines)):
             if self.lines[i] == []:
@@ -66,10 +96,6 @@ class Main():
         # 例外カウント
         except_count = 0
 
-        # 点灯確認
-        if self.test:
-            print(f"{Log.INFO()}Strip{led_idx}: Testing LEDs...")
-            self.leds[led_idx].test_strip()
         print(f"{Log.INFO()}Strip{led_idx}: Started real-time display!")
 
         while True:
