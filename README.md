@@ -60,7 +60,8 @@ sudo pip3 install rpi_ws281x
 usage: main.py [-h]
                [-ch0 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
                [-ch1 [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} [{G,M,H,T,C,Y,Z,N,F,A,I,S,E} ...]]]
-               [-l LED_CONFIG] [--test]
+               [-l LED_CONFIG] [-s STATION_TABLE]
+               [-a {normal,history,routenum}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -70,7 +71,12 @@ optional arguments:
                         PWM Channel 1に表示する路線の路線記号.
   -l LED_CONFIG, --led-config LED_CONFIG
                         LEDの設定ファイル. Default: ./config/led_config.json
-  --test                起動時にLED動作テストを行う.
+  -s STATION_TABLE, --station-table STATION_TABLE
+                        駅番号の定義ファイル. Default: ./data/station_table.json
+  -a {normal,history,routenum}, --animation {normal,history,routenum}
+                        起動時にLEDアニメーションを行う.
+                        13線全ての路線表示を行う場合，history，routenumを選択可能． normal: 接続順に点灯,
+                        history: 開業順に点灯, routenum: 路線番号順に点灯
 ```
 PWM Channel 0 (GPIO 12 or 18)に銀座線を表示する場合，以下コマンドで実行します．  
 ```
@@ -96,6 +102,20 @@ sudo python3 main.py -ch0 G -l ./config/WS2812B.json
 sudo python3 main.py -ch0 G -l ./config/WS2812B_ECO.json
 ```
 
+### 起動時にアニメーションを行う場合
+#### LEDテープの接続順にアニメーションを行う
+```
+sudo python3 main.py -ch0 G -a normal
+```
+#### 路線開業順にアニメーションを行う (13路線全てを選択した場合のみ選択可能)
+```
+sudo python3 main.py -ch0 H C F I N M -ch1 A G Z S T Y E -a history
+```
+#### 路線番号順にアニメーションを行う (13路線全てを選択した場合のみ選択可能)
+```
+sudo python3 main.py -ch0 H C F I N M -ch1 A G Z S T Y E -a routenum
+```
+
 ## Customize
 ### 路線ごとのLEDの明るさ・色調整
 LEDテープによって個体差があるため，発色具合が良くない場合，[config/led_config.json](config/led_config.json)内の設定値を変更することで，明るさや色調整ができます．  
@@ -109,3 +129,8 @@ LED自体の明るさを調整できます(0~255). 各路線共通の設定で�
 列車がいない場合の色を調整できます(0~255)．  
 - led_distance  
 駅間のLEDドット数を調整できます．
+- reverse (高度な設定)  
+後述するLEDテープの接続の都合により，本来とは逆の駅番号を[data/station_table.json](data/station_table.json)内で設定した場合は，`true`を設定します．  
+
+### 駅番号の任意設定 (高度)
+複数路線を連続して接続する場合，次路線の向きが本来の駅番号と逆順になってしまう場合，[data/station_table.json](data/station_table.json)内の番号を逆順に変更することで，正しい順番で路線表示を行うことができます．  

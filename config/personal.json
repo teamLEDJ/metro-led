@@ -1,19 +1,19 @@
 {
-    "led_distance": 6,
+    "led_distance": 4,
     "stationcolor": [70, 70, 70],
-    "brightness": 70,
+    "brightness": 42,
     "lines": {
         "G": {
             "traincolor": [255, 50, 0],
             "groundcolor": [45, 9, 0],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
         "M": {
             "traincolor": [255, 0, 0],
             "groundcolor": [45, 0, 0],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
@@ -34,14 +34,14 @@
         "C": {
             "traincolor": [0, 220, 40],
             "groundcolor": [0, 39, 6],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
         "Y": {
             "traincolor": [199, 60, 10],
             "groundcolor": [39, 12, 1],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
@@ -76,21 +76,21 @@
         "I": {
             "traincolor": [0, 60, 200],
             "groundcolor": [0, 6, 20],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
         "S": {
             "traincolor": [150, 193, 22],
             "groundcolor": [26, 28, 6],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         },
         "E": {
             "traincolor": [255, 6, 43],
             "groundcolor": [36, 2, 8],
-            "reverse": false,
+            "reverse": true,
             "strip": null,
             "cache": {}
         }

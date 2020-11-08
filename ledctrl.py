@@ -96,42 +96,39 @@ class LEDCtrl():
             for j in range(len(self.use_lines)):
                 self.__set_background(self.use_lines[j])
                 self.__set_stationpos(self.use_lines[j])
+                time.sleep(0.1)
+                self.__strip.show()
                 cache = self.__set_trainpos( 
                     self.use_lines[j], trains[j], self.lines[self.use_lines[j]]["cache"], i)
                 # 最終ループ
                 if i == self.distance - 2:
                     self.lines[self.use_lines[j]]["cache"] = cache
 
-            self.__strip.show()
-            time.sleep(self.update_freq/(self.distance-1))
-        
-    def test_strip(self):
-        '''LED点灯テスト
-        '''
-        # wipe
-        for i in range(len(self.use_lines)):
-            for j in range((len(self.stations[self.use_lines[i]]) - 1) * self.distance + 1):
-                self.__strip.setPixelColor(
-                    j+self.lines[self.use_lines[i]]["offset"],
-                    Color(*self.lines[self.use_lines[i]]["traincolor"]))
-                if j % self.distance == 0:
-                    self.__strip.setPixelColor(
-                        j+self.lines[self.use_lines[i]]["offset"], Color(*self.sta_color))
                 self.__strip.show()
-                time.sleep(0.01)
-        
-        # fade
-        for i in range(2):
-            for j in range(20, 120):
-                self.__strip.setBrightness(j)
-                self.__strip.show()
-                time.sleep(0.02)
-            for j in range(120, 20, -1):
-                self.__strip.setBrightness(j)
-                self.__strip.show()
-                time.sleep(0.02)
+            time.sleep(self.update_freq/(self.distance-1) - 0.1)
+    
+    def wipe_strip(self, line):
+        '''LEDテープのWipeアニメーション
 
-        self.__strip.setBrightness(self.brightness)
+        Parameters
+        ----------
+        line : str
+            アニメーションを行う路線記号
+        '''
+        if self.lines[line]["reverse"]:
+            range_list = range((len(self.stations[line]) - 1) * self.distance, -1, -1)
+        else:
+            range_list = range((len(self.stations[line]) - 1) * self.distance + 1)
+
+        for i in range_list:
+            self.__strip.setPixelColor(
+                i+self.lines[line]["offset"],
+                Color(*list(map(lambda x: int(x * 0.5), self.lines[line]["traincolor"]))))
+            if i % self.distance == 0:
+                self.__strip.setPixelColor(
+                    i+self.lines[line]["offset"], Color(*self.sta_color))
+            self.__strip.show()
+            time.sleep(0.01)
 
     def clear_strip(self):
         '''LEDテープを消灯
