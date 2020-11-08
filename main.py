@@ -26,7 +26,7 @@ class Main():
                                 help="駅番号の定義ファイル. Default: ./data/station_table.json", default="./data/station_table.json",
                                 type=str)
         self.parser.add_argument("-a", "--animation",  action='store',
-                                help="起動時にLEDアニメーションを行う. 13線全ての路線表示を行う場合，normal, history，routenumを選択可能． \
+                                help="起動時にLEDアニメーションを行う. 13線全ての路線表示を行う場合，history，routenumを選択可能． \
                                 normal: 接続順に点灯, history: 開業順に点灯, routenum: 路線番号順に点灯",
                                 default="", choices=["normal", "history", "routenum"])
 
